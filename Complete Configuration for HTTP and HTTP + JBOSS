@@ -1,0 +1,182 @@
+http://library.com/swfchart_jsp_samples
+
+Library 8080 / 8443
+
+http://jboss-host1:8080/swfchart_jsp_samples
+http://jboss-host2:8080/swfchart_jsp_samples
+
+http://jboss-host1:8080/counter
+http://jboss-host2:8080/counter
+
+Shared Cluster 8081 / 8444
+http://jboss-host1:8081/httpSession/login.html
+http://jboss-host2:8081/httpSession/login.html
+
+
+
+--------index.html
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="Library" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<h2>This is the Library website</h2>
+<p>This is just an example of an Library </p>
+
+  <nav>
+    <ul>
+      <li><a href="/swfchart_jsp_samples">Chart</a></li>
+      <li><a href="/counter">Counter</a></li>
+    </ul>
+  </nav>
+
+</body>
+</html>
+
+
+Proxy:
+
+--------httpd-vhost.conf
+
+<Location "/balancer-manager">
+    SetHandler balancer-manager
+    Require all granted
+</Location>
+
+Header add Set-Cookie "ROUTEID=.%{BALANCER_WORKER_ROUTE}e; path=/" env=BALANCER_ROUTE_CHANGED
+<proxy balancer://library-group>
+        BalancerMember http://jboss-host1:8080/swfchart_jsp_samples/ route=slave1
+        BalancerMember http://jboss-host2:8080/swfchart_jsp_samples/ route=slave2
+    ProxySet stickysession=ROUTEID
+    ProxySet lbmethod=bytraffic
+</proxy>
+ProxyPass "/swfchart_jsp_samples/" "balancer://library-group/"  stickysession=JSESSIONID|jsessionid scolonpathdelim=On
+ProxyPassReverse "/swfchart_jsp_samples/" "balancer://library-group/"
+
+AJP:
+
+---------worker.properties
+
+#Name of the worker
+worker.list = library-group
+#Slave 1 configuration
+worker.slave1.type = ajp13
+worker.slave1.host = 192.168.148.130
+worker.slave1.port = 8009
+worker.slave1.lbfactor = 10
+#Slave 2 configuration
+worker.slave2.type = ajp13
+worker.slave2.host = 192.168.148.135
+worker.slave2.port = 8009
+worker.slave2.lbfactor = 10
+#LB method and stick session and the member details
+worker.library-group.type = lb
+worker.library-group.sticky_session = 0
+worker.library-group.balance_workers = slave1, slave2
+
+
+
+--------httpd-vhost.conf
+
+LoadModule jk_module modules/mod_jk.so
+
+# Specify path to worker configuration file
+JkWorkersFile /opt/httpd/conf/workers.properties
+
+# Configure logging and memory
+JkShmFile logs/mod_jk.shm
+JkLogFile logs/mod_jk.log
+JkLogLevel info
+
+<VirtualHost *:80>
+    ServerAdmin example@library.com
+    DocumentRoot "/opt/content/library/"
+    DirectoryIndex index.html
+    ServerName www.library.com
+    ServerAlias library.com
+    ErrorLog "logs/library.com-error_log"
+    CustomLog "logs/library.com-access_log" combined
+    JkMount /swfchart_jsp_samples/* library-group
+</VirtualHost>
+
+<Directory "/opt/content/library/">
+    Options Indexes FollowSymLinks
+    AllowOverride None
+    Require all granted
+</Directory>
+
+
+Mod_cluster
+
+-----------Domain.xml
+
+<proxy name="default" advertise-security-key="secret" proxies="modcluster-outbound-proxy" advertise-socket="modcluster" listener="ajp">
+
+            <outbound-socket-binding name="modcluster-outbound-proxy">
+                <remote-destination host="192.168.148.130" port="6666"/>
+            </outbound-socket-binding>
+
+
+
+-----------httpd-vhost.conf
+LoadModule proxy_cluster_module modules/mod_proxy_cluster.so
+LoadModule cluster_slotmem_module modules/mod_cluster_slotmem.so
+LoadModule manager_module modules/mod_manager.so
+LoadModule advertise_module modules/mod_advertise.so
+
+Listen *:6666
+
+MemManagerFile "/opt/httpd/cache/mod_cluster"
+
+<IfModule manager_module>
+    ManagerBalancerName library-group
+
+    <VirtualHost *:6666>
+    KeepAliveTimeout 300
+    MaxKeepAliveRequests 0
+    ServerAdvertise on
+    AdvertiseFrequency 5
+    AdvertiseSecurityKey secret
+    AdvertiseGroup 224.0.1.105:23364
+    EnableMCPMReceive
+    ErrorLog logs/manager.com-error_log
+    CustomLog logs/manager.com-access_log common
+    <Location /mc>
+      SetHandler mod_cluster-manager
+      Require ip 127.0.0.1 ::1
+    </Location>
+
+    <Directory />
+      Require all granted
+    </Directory>
+
+     </VirtualHost>
+</IfModule>
+
+  <VirtualHost *:80>
+  KeepAliveTimeout 60
+  MaxKeepAliveRequests 0
+  ServerAdmin library@library.com
+  DocumentRoot /opt/content/library/
+  ServerName www.library.com
+  ServerAlias library.com
+  ErrorLog logs/library.com-error_log
+  CustomLog logs/library.com-access_log common
+    ProxyPass /swfchart_jsp_samples/* balancer://library-group stickysession=JSESSIONID|jsessionid nofailover=On
+    ProxyPassReverse /swfchart_jsp_samples/* balancer://library-group
+    ProxyPreserveHost On
+  </VirtualHost>
+
+<Directory /opt/content/library>
+    Options FollowSymLinks
+    AllowOverride None
+    FileETag All -INode
+    Require all granted
+</Directory>
+
+
+-----------Browser:
+google-chrome --explicitly-allowed-ports=6666 &
