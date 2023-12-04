@@ -1,0 +1,39 @@
+#WARNING: script developed for trianing dont use this else where.
+
+echo "Changing the value of security key of the mod_cluster to secret1"
+/profile=full-ha/subsystem=modcluster/proxy=default:write-attribute(name=advertise-security-key, value=secret1)
+
+echo
+echo "Checking the list of deployment before undeploying"
+deployment list
+
+echo
+echo "Undeploying the application"
+undeploy testing.war --all-relevant-server-groups
+
+echo
+echo "Checking the list of deployment After undeploying"
+deployment list
+
+echo
+echo "Deploying Testing WAR File"
+deployment deploy-file /opt/software/ear/testing/ --name=testing.war --runtime-name=testing.war --server-groups=Shared-group --unmanaged
+
+echo
+echo "Checking the list of deployment After deployment"
+deployment list
+
+echo
+echo "Changing the value of security key of the mod_cluster to secret"
+/profile=full-ha/subsystem=modcluster/proxy=default:write-attribute(name=advertise-security-key, value=secret)
+
+echo
+echo "Displaying the current security key value"
+/profile=full-ha/subsystem=modcluster/proxy=default:read-attribute(name=advertise-security-key)
+
+echo
+echo "Restarting servergroup"
+/server-group=Shared-group:restart-servers
+
+echo
+echo "Deployment, value change & Restart is completed"
