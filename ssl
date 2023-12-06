@@ -1,0 +1,109 @@
+SSL - Managment
+
+keytool -genkey -alias mgmt -keyalg RSA -sigalg SHA256withRSA -keysize 2048 -keypass password -keystore /opt/jboss-master/domain/configuration/management.keystore -storepass password -validity 365 -dname "CN=jboss-host1,OU=Jboss,O=Managmenet,L=London,ST=LN,C=UK" -ext SAN=dns:*.jboss-host1,dns:jbosshost1,ip:192.168.148.130
+
+keytool -exportcert -alias mgmt -keystore /opt/jboss-master/domain/configuration/management.keystore -file mgmt.cert
+
+keytool -v -list -keystore /opt/jboss-master/domain/configuration/management.keystore
+
+openssl x509 -in /opt/jboss-master/domain/configuration/mgmt.cert -noout -text
+
+keytool -import -file mgmt.cert -alias mgmt -keystore /opt/jboss-slave1/domain/configuration/management.truststore
+
+
+-----------slave.xml
+
+<truststore path="management.truststore" relative-to="jboss.domain.config.dir" keystore-password="password" />
+
+<static-discovery name="primary" protocol="${jboss.domain.master.protocol:remote+https}" host="192.168.243.134" port="${jboss.domain.master.port:9443}"/>
+
+
+
+SSL application configuration
+
+
+keytool -genkey -alias library -keyalg RSA -sigalg SHA256withRSA -keypass password -keystore /opt/jboss-slave1/domain/configuration/library.keystore -storepass password -validity 365 -dname "CN=library.com,OU=Jboss,O=Library,L=London,ST=LN,C=UK" -ext SAN=dns:jboss-host1,dns:*.library.com,ip:192.168.148.130
+
+
+keytool -genkey -alias library -keyalg RSA -sigalg SHA256withRSA -keypass password -keystore /opt/jboss-slave1/domain/configuration/library.keystore -storepass password -validity 365 -dname "CN=library.com,OU=Jboss,O=Library,L=London,ST=LN,C=UK" -ext SAN=dns:jboss-host2,dns:*.library.com,ip:192.168.148.135
+
+
+
+ssl for HTTP:
+
+openssl genrsa -out server.key 2048
+openssl req -new -key server.key -out server.csr
+openssl x509 -req -days 365 -in server.csr -signkey server.key -out server.crt
+
+
+-----httpd-ssl.conf
+Listen jboss-host1:443
+
+SSLCipherSuite HIGH:MEDIUM:!MD5:!RC4:!3DES
+SSLProxyCipherSuite HIGH:MEDIUM:!MD5:!RC4:!3DES
+SSLHonorCipherOrder on
+SSLProtocol all -SSLv3
+SSLProxyProtocol all -SSLv3
+SSLPassPhraseDialog  builtin
+SSLSessionCache        "shmcb:/opt/httpd//logs/ssl_scache(512000)"
+SSLSessionCacheTimeout  300
+
+<VirtualHost jboss-host1:443>
+ServerAdmin library@library.com
+DocumentRoot /opt/content/library/
+ServerName www.library.com
+ServerAlias library.com
+ErrorLog "/opt/httpd//logs/error_log"
+TransferLog "/opt/httpd//logs/access_log"
+SSLEngine on
+###########
+ProxyPass /swfchart_jsp_samples/* balancer://library-group stickysession=JSESSIONID|jsessionid nofailover=On
+ProxyPassReverse /swfchart_jsp_samples/* balancer://library-group
+ProxyPreserveHost On 
+##########
+SSLCertificateFile "/opt/httpd//conf/server.crt"
+SSLCertificateKeyFile "/opt/httpd//conf/server.key"
+CustomLog "/opt/httpd//logs/ssl_request_log" \
+          "%t %h %{SSL_PROTOCOL}x %{SSL_CIPHER}x \"%r\" %b"
+LogLevel debug
+</VirtualHost>
+
+<Directory /opt/content/library>
+    Options FollowSymLinks
+    AllowOverride None
+    FileETag All -INode
+    Require all granted
+</Directory>
+
+Mod_cluster HTTP Redirction fix.
+----domain.xml
+
+excluded-contexts="ROOT,invoker,jbossws,juddi,console"
+
+Enable redirect
+Redirect permanent / https://mysite.example.com/
+
+Openssl with SAN Names.
+
+openssl genrsa -out server.key 2048
+
+openssl req -x509 -nodes -days 730 -key server.key -keyout server.crt -out server.crt -config config -extensions 'v3_req'
+
+---------config.xml
+[req]
+distinguished_name = req_distinguished_name
+x509_extensions = v3_req
+prompt = no
+[req_distinguished_name]
+C = US
+ST = VA
+L = Vegas
+O = Library
+OU = Books
+CN = www.library.com
+[v3_req]
+keyUsage = nonRepudiation, digitalSignature, keyEncipherment
+extendedKeyUsage = serverAuth
+subjectAltName = @alt_names
+[alt_names]
+DNS.1 = *.library.com
