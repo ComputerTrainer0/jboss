@@ -1,0 +1,45 @@
+Gracefully shutting down JBoss (WildFly) can be done using the management CLI (Command Line Interface) or the web-based Admin Console. This allows you to stop JBoss in a controlled manner, ensuring that ongoing operations are completed before the server is stopped. Here are the steps to gracefully shut down JBoss:
+
+Using the Management CLI (Command Line Interface):
+Open a terminal or command prompt.
+
+Navigate to the JBoss bin directory where the jboss-cli.sh (for Unix-based systems) or jboss-cli.bat (for Windows) script is located.
+
+Start the JBoss management CLI by running the appropriate script:
+
+For Unix-based systems:
+bash
+Copy code
+./jboss-cli.sh
+For Windows:
+shell
+Copy code
+jboss-cli.bat
+Connect to the running JBoss instance:
+
+bash
+Copy code
+connect
+Gracefully shut down the server by sending a shutdown command with a timeout. Replace <timeout> with the desired timeout in seconds (e.g., 60 seconds):
+
+bash
+Copy code
+shutdown --timeout=<timeout>
+Wait for the shutdown process to complete. JBoss will finish processing any ongoing tasks before stopping. You'll see a message indicating that the server has shut down gracefully.
+
+Using the Admin Console (Web-Based Interface):
+Open a web browser and navigate to the JBoss Admin Console URL. By default, the URL is http://localhost:9990/console.
+
+Log in to the Admin Console using your administrative credentials.
+
+In the Admin Console, go to the "Runtime" section on the left navigation menu.
+
+Click on "Server" to access the server management options.
+
+In the "Server" view, click the "Shutdown" button.
+
+A dialog box will appear, allowing you to specify a timeout for the shutdown. Enter the desired timeout value in seconds (e.g., 60 seconds) and click "Shutdown."
+
+Wait for the shutdown process to complete. The Admin Console will display a message indicating that the server has shut down gracefully.
+
+Using either method described above, you can gracefully shut down your JBoss server, ensuring that ongoing operations are allowed to complete before the server stops. This is especially important for production environments to prevent data corruption and ensure a smooth server shutdown.
