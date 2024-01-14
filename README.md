@@ -6,6 +6,7 @@ All My trainings on UDMEY for a high discounted price:
 
 
 Online Courses:
+
 Mastering IBM WebSphere Liberty Administration - https://www.udemy.com/course/websphere-liberty/?referralCode=2E07BB65BEB019D66349
 
 Mastering JBoss EAP: From Novice to Expert - https://www.udemy.com/course/mastering-jboss/?referralCode=DFEA6758A6DD94367269
@@ -20,6 +21,7 @@ SSL/TLS Automation- Creating, Renewing & Managing Certs - https://www.udemy.com/
 
 
 Certification Pratice Test:
+
 C1000-058: IBM MQ V9.1 System Administration - Pratice Test -https://www.udemy.com/course/ibm-mq-exam/?referralCode=AC49C6B61FCA08602112
 
 C1000-174: IBM WebSphere Application Server - Pratice Test - https://www.udemy.com/course/ibm-was-exam/?referralCode=FC3BB80320318FA41203
@@ -27,4 +29,5 @@ C1000-174: IBM WebSphere Application Server - Pratice Test - https://www.udemy.c
 C1000-126 - IBM WebSphere Hybrid Edition - Practice Test - https://www.udemy.com/course/websphere-hybrid-exam/?referralCode=15E8B26F7CB2F4DC693B
 
 Demo:
+
 Advanced Docker Administration - DEMO - https://www.udemy.com/course/docker-expert/?referralCode=7241FFBE6A67EA7E5E64
