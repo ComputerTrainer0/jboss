@@ -1,7 +1,14 @@
 Connect me @ beyondcloudai@gmail.com
 
-All softwars Opensource avaialble. All My trainings on UDMEY for a high discounted price:
+All software Opensource available. All My trainings on UDMEY for a high discounted price:
 
+Certification Pratice Test:
+
+C1000-058: IBM MQ V9.1 System Administration - Pratice Test -https://www.udemy.com/course/ibm-mq-exam/?referralCode=AC49C6B61FCA08602112
+
+C1000-174: IBM WebSphere Application Server - Pratice Test - https://www.udemy.com/course/ibm-was-exam/?referralCode=FC3BB80320318FA41203
+
+C1000-126 - IBM WebSphere Hybrid Edition - Practice Test - https://www.udemy.com/course/websphere-hybrid-exam/?referralCode=15E8B26F7CB2F4DC693B
 
 Online Courses:
 
@@ -16,15 +23,6 @@ Mastering IBM MQ Administration 9.X: From Novice to Expert - https://www.udemy.c
 IBM WebSphere Hybrid Edition - Solution Architect - https://www.udemy.com/course/websphere-hybrid/?referralCode=162A4E036BE71784AEEF
 
 SSL/TLS Automation- Creating, Renewing & Managing Certs - https://www.udemy.com/course/ssl-automation-script/?referralCode=6D3E3445F8EB8E6A5446
-
-
-Certification Pratice Test:
-
-C1000-058: IBM MQ V9.1 System Administration - Pratice Test -https://www.udemy.com/course/ibm-mq-exam/?referralCode=AC49C6B61FCA08602112
-
-C1000-174: IBM WebSphere Application Server - Pratice Test - https://www.udemy.com/course/ibm-was-exam/?referralCode=FC3BB80320318FA41203
-
-C1000-126 - IBM WebSphere Hybrid Edition - Practice Test - https://www.udemy.com/course/websphere-hybrid-exam/?referralCode=15E8B26F7CB2F4DC693B
 
 Demo:
 
