@@ -5,7 +5,7 @@ All softwars Opensource avaialble. All My trainings on UDMEY for a high discount
 
 Online Courses:
 
-Mastering IBM WebSphere Liberty Administration - https://www.udemy.com/course/websphere-liberty/?referralCode=2E07BB65BEB019D66349
+Mastering IBM WebSphere Liberty: From Novice to Expert - https://www.udemy.com/course/websphere-liberty/?referralCode=2E07BB65BEB019D66349
 
 Mastering JBoss EAP: From Novice to Expert - https://www.udemy.com/course/mastering-jboss/?referralCode=DFEA6758A6DD94367269
 
