@@ -1,8 +1,6 @@
-Connect me @ online.trainer.1212@gmail.com
+Connect me @ beyondcloudai@gmail.com
 
-All softwars Opensource avaialble.
-
-All My trainings on UDMEY for a high discounted price:
+All softwars Opensource avaialble. All My trainings on UDMEY for a high discounted price:
 
 
 Online Courses:
