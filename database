@@ -1,0 +1,98 @@
+Installation oF Database - MYSQL
+
+Ear & MYSQL DB: https://drive.google.com/drive/folders/1x7yUGOtzKZiNzjQB3uZ7swKJiwZpGZOI?usp=sharing
+
+sudo yum -y install mysql-server.x86_64
+
+sudo service mysqld start
+
+mysqladmin -u root password password
+
+mysql -uroot -ppassword < /opt/software/mysql/world.sql
+
+mysql -uroot -ppassword
+
+show databases;
+
+use world;
+
+show tables;
+
+select * from city;
+
+select * from country;
+
+GRANT ALL PRIVILEGES ON world.* TO 'root'@'localhost';
+
+##- SELECT, INSERT, DELETE or database.tablename or 'user'@'%'
+
+FLUSH PRIVILEGES;
+
+SHOW GRANTS FOR 'root'@'localhost';
+
+GRANT ALL PRIVILEGES ON world.* TO 'root'@'%';
+
+FLUSH PRIVILEGES;
+
+##- If you managed to remove the permission this will restore it.
+
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION;
+
+-Create a user for the hostname
+
+create user 'root'@'jboss-host1' IDENTIFIED BY 'password';
+
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'jboss-host1' WITH GRANT OPTION;
+
+GRANT ALL PRIVILEGES ON world.* TO 'root'@'jboss-host1' WITH GRANT OPTION;
+
+FLUSH PRIVILEGES;
+
+=============================================
+
+Jboss Setup
+
+standalone.xml / domain.xml 
+
+                <datasource jndi-name="java:/jdbc/worldDB" pool-name="worldDB" enabled="true" use-java-context="true" statistics-enabled="true">
+                    <connection-url>jdbc:mysql://10.0.15.130:3306/world</connection-url>
+                    <driver>mysql</driver>
+                    <pool>
+                        <min-pool-size>10</min-pool-size>
+                        <max-pool-size>300</max-pool-size>
+                        <prefill>true</prefill>
+                    </pool>
+                    <security>
+                        <user-name>root</user-name>
+                        <password>password</password>
+                    </security>
+                </datasource>
+
+#On Drivers section
+                    <driver name="mysql" module="com.mysql">
+                        <driver-class>com.mysql.jdbc.Driver</driver-class>
+                    </driver>
+                </drivers>
+
+
+------------------------------------
+/opt/jboss/modules/system/layers/base/com/mysql/main/
+copy the mysql jar file to this location and create the below file.
+
+
+vi modules.xml
+
+<?xml version="1.0" encoding="UTF-8"?>
+<module xmlns="urn:jboss:module:1.1" name="com.mysql">
+         <properties>
+            <property name="jboss.api" value="unsupported"/>
+         </properties>
+    <resources>
+        <resource-root path="mysql-connector-java-5.1.49.jar"/>
+    </resources>
+    <dependencies>
+        <module name="javax.api"/>
+        <module name="javax.transaction.api"/>
+        <module name="javax.servlet.api" optional="true"/>
+    </dependencies>
+</module>
