@@ -78,7 +78,7 @@ standalone.xml / domain.xml
 copy the mysql jar file to this location and create the below file.
 
 
-vi modules.xml
+vi module.xml
 
 <?xml version="1.0" encoding="UTF-8"?>
 <module xmlns="urn:jboss:module:1.1" name="com.mysql">
