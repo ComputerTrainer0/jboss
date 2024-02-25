@@ -72,8 +72,6 @@ standalone.xml / domain.xml
                     <driver name="mysql" module="com.mysql">
                         <driver-class>com.mysql.jdbc.Driver</driver-class>
                     </driver>
-                </drivers>
-
 
 ------------------------------------
 /opt/jboss/modules/system/layers/base/com/mysql/main/
