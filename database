@@ -1,5 +1,7 @@
 Installation oF Database - MYSQL
 
+Ear & MYSQL DB: https://drive.google.com/drive/folders/1x7yUGOtzKZiNzjQB3uZ7swKJiwZpGZOI?usp=sharing
+
 sudo yum -y install mysql-server.x86_64
 
 sudo service mysqld start
