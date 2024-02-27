@@ -1,0 +1,26 @@
+
+Production Heap Size with G1GC
+standalone.conf / domain.conf
+JAVA_OPTS="$JAVA_OPTS -Xms512m -Xmx1024m"
+JAVA_OPTS="$JAVA_OPTS -XX:MaxMetaspaceSize=256m"
+JAVA_OPTS="$JAVA_OPTS -XX:+UseG1GC"
+JAVA_OPTS="$JAVA_OPTS -XX:MaxGCPauseMillis=200"
+JAVA_OPTS="$JAVA_OPTS -XX:G1HeapRegionSize=4M"
+JAVA_OPTS="$JAVA_OPTS -Xss1m"
+JAVA_OPTS="$JAVA_OPTS -XX:SurvivorRatio=6"
+JAVA_OPTS="$JAVA_OPTS -XX:NewRatio=2" 
+JAVA_OPTS="$JAVA_OPTS -Xlog:gc*=info:file=gc.log::filecount=10,filesize=10M"
+
+
+
+In case if you want to use zgc (which is an expremental feature in Java11)
+
+standalone.conf / domain.conf
+JAVA_OPTS="$JAVA_OPTS -Xms512m -Xmx1024m"
+JAVA_OPTS="$JAVA_OPTS -XX:MaxMetaspaceSize=256m"
+JAVA_OPTS="$JAVA_OPTS -Xss1m"
+JAVA_OPTS="$JAVA_OPTS -XX:SurvivorRatio=6"
+JAVA_OPTS="$JAVA_OPTS -XX:NewRatio=2" 
+JAVA_OPTS="$JAVA_OPTS -XX:+UnlockExperimentalVMOptions"
+JAVA_OPTS="$JAVA_OPTS -XX:+UseZGC"
+JAVA_OPTS="$JAVA_OPTS -Xlog:gc*=info:file=gc.log::filecount=10,filesize=10M"
