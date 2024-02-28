@@ -9,7 +9,7 @@ JAVA_OPTS="$JAVA_OPTS -XX:G1HeapRegionSize=4M"
 JAVA_OPTS="$JAVA_OPTS -Xss1m"
 JAVA_OPTS="$JAVA_OPTS -XX:SurvivorRatio=6"
 JAVA_OPTS="$JAVA_OPTS -XX:NewRatio=2" 
-JAVA_OPTS="$JAVA_OPTS -Xlog:gc*=info:file=gc.log::filecount=10,filesize=10M"
+JAVA_OPTS="$JAVA_OPTS -Xlog:gc*=info:file=/opt/jboss/standalone/log/g1gc.log::filecount=10,filesize=10M"
 
 
 
@@ -23,4 +23,4 @@ JAVA_OPTS="$JAVA_OPTS -XX:SurvivorRatio=6"
 JAVA_OPTS="$JAVA_OPTS -XX:NewRatio=2" 
 JAVA_OPTS="$JAVA_OPTS -XX:+UnlockExperimentalVMOptions"
 JAVA_OPTS="$JAVA_OPTS -XX:+UseZGC"
-JAVA_OPTS="$JAVA_OPTS -Xlog:gc*=info:file=gc.log::filecount=10,filesize=10M"
+JAVA_OPTS="$JAVA_OPTS -Xlog:gc*=info:file=/opt/jboss/standalone/log/zgc.log::filecount=10,filesize=10M"
