@@ -1,0 +1,13 @@
+
+
+#If Internet isnot working follow this steps on the docker host (where dockerservice is running)
+  
+  pkill docker
+  iptables -t nat -F
+  ifconfig docker0 down
+  ifconfig docker0 up
+  service docker start
+  #Delete the container and recreate it.
+
+
+#
