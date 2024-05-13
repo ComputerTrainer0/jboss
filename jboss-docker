@@ -9,5 +9,21 @@
   service docker start
   #Delete the container and recreate it.
 
+#Create Network:
 
-#
+  docker network create --subnet=172.15.0.0/16 my_bridge_network
+
+
+#Looking to encrypt your password on jboss password
+
+  https://www.webutils.pl/index.php?idx=base64
+  Admin= YWRtaW4=
+
+#Loading Image:
+docker build -t my-jboss-image .
+
+
+#Running Docker:
+docker run -d --network=my_bridge_network --ip 172.15.0.10 -p 9990:9990 -v /opt//software/jboss-master/jboss-master/:/opt/jboss/ jboss-master
+docker run -d --network=my_bridge_network --ip 172.15.0.11 -p 8080:8080 -v /opt//software/jboss-slave1/jboss-slave1/:/opt/jboss/ jboss-slave1
+docker run -d --network=my_bridge_network --ip 172.15.0.12 -p 8081:8081 -v /opt//software/jboss-slave2/jboss-slave2/:/opt/jboss/ jboss-slave2
