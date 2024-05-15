@@ -1,4 +1,17 @@
 
+#Docker Installation
+
+Install though yum Online:
+$ sudo yum install -y yum-utils
+$ sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+$ sudo yum install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+$ sudo systemctl start docker
+$ sudo systemctl enable docker.service
+$ sudo systemctl enable containerd.service
+$ docker compose version
+$ docker --version
+$ docker version
+
 
 #If Internet isnot working follow this steps on the docker host (where dockerservice is running)
   
@@ -13,6 +26,8 @@
 
   docker network create --subnet=172.15.0.0/16 my_bridge_network
 
+#Download the dockerfile and jboss installation.
+
 
 #Looking to encrypt your password on jboss password
 
@@ -20,7 +35,9 @@
   Admin= YWRtaW4=
 
 #Loading Image:
-docker build -t my-jboss-image .
+docker build -t jboss-master .
+docker build -t jboss-slave1 .
+docker build -t jboss-slave2 .
 
 
 #Running Docker:
